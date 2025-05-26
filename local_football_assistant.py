@@ -1,5 +1,5 @@
 import psycopg2
-from langchain.llms import LlamaCpp
+from langchain_community.llms import LlamaCpp
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.prompts import PromptTemplate
@@ -93,7 +93,7 @@ class LocalFootballAssistant:
 
     def generate_sql_query(self, question: str) -> str:
         prompt = self.sql_template.format(question=question)
-        return self.llm(prompt).strip()
+        return self.llm.invoke(prompt).strip()
 
     def generate_response(self, question: str, query: str, results: List[tuple]) -> str:
         prompt = self.response_template.format(
@@ -101,7 +101,7 @@ class LocalFootballAssistant:
             query=query,
             results=json.dumps(results, indent=2)
         )
-        return self.llm(prompt).strip()
+        return self.llm.invoke(prompt).strip()
 
     def answer_question(self, question: str) -> str:
         try:
